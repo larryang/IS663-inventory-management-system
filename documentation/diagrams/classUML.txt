@@ -71,7 +71,7 @@ class Customer {
 }
 
 class Address {
-  addressID
+  addressId
   company
   street1
   street2
@@ -110,7 +110,7 @@ class ShippingVendor {
 }
 
 class Invoice {
-  invoiceID
+  invoiceId
   read()
   add()
   update()
