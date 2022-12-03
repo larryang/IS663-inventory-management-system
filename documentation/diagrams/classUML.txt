@@ -1,0 +1,161 @@
+@startuml
+
+class InventoryManager {
+ search()
+ list()
+ sort()
+ export()
+}
+
+class OrderManager {
+ search()
+ list()
+ sort()
+ export()
+}
+
+class CustomerManager {
+ search()
+ list()
+ sort()
+ export()
+}
+
+class InventoryItem {
+  inventoryItemId
+  vendor
+  type
+  style
+  Sku
+  description
+  size
+  price
+  images
+  read()
+  add()
+  update()
+  delete()
+  copy()
+}
+
+class PurchaseOrder {
+  purchaseOrderId
+  inventoryItemId
+  customerId
+  shippingId
+  invoiceId
+  read()
+  add()
+  update()
+  delete()
+  addItem()
+  addCustomer()
+  addShipping()
+  createInvoice()
+  copy()
+  export()
+  send()
+  accept()
+}
+
+class Customer {
+  customerId
+  addressId
+  name
+  company
+  read()
+  add()
+  update()
+  delete()
+  addAddress()
+}
+
+class Address {
+  addressID
+  company
+  street1
+  street2
+  city
+  state
+  country
+  postalCode
+  read()
+  add()
+  update()
+  delete()
+}
+
+class Shipping {
+  shippingId
+  shippingVendor
+  shippingSpeed
+  trackingId
+  read()
+  add()
+  update()
+  delete()
+  calculate()
+  ship()
+  getTracking()
+}
+
+class ShippingVendor {
+  shippingVendorId
+  name
+  speedOptions
+  read()
+  add()
+  update()
+  delete()
+}
+
+class Invoice {
+  invoiceID
+  read()
+  add()
+  update()
+  delete()
+  calculate()
+  pay()
+  export()
+  send()
+}
+
+class User {
+  userId
+  name
+  email
+  password
+  read()
+  add()
+  update()
+  delete()
+}
+
+class Auth {
+  sessionId
+  userId
+  permission
+  login()
+  logout()
+  editAccount()
+  changePassword()
+}
+
+class Report {
+  lowInventoryAlert()
+  returns()
+}
+
+InventoryManager "1..1" --|> "0..*" InventoryItem
+OrderManager  "1..1" --|> "0..*" PurchaseOrder
+CustomerManager  "1..1" --|> "0..*" Customer
+PurchaseOrder "1..1" --|> "1..1" Invoice
+PurchaseOrder "1..1" --|> "1..1" Customer
+PurchaseOrder "1..1" --|> "1..1" Shipping
+PurchaseOrder "1..1" --|> "1..*" InventoryItem
+Customer --|> "1..*" Address
+Auth --|> "1..1" User
+Shipping "1..1" --|> "1..1" ShippingVendor
+
+@enduml
