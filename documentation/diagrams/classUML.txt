@@ -96,7 +96,7 @@ class Address {
 
 class Shipping {
   shippingId
-  shippingVendor
+  shippingVendorId
   shippingSpeed
   trackingId
   read()
