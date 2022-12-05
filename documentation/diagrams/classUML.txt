@@ -1,5 +1,4 @@
 @startuml
-
 class InventoryManager {
  search()
  list()
@@ -19,6 +18,16 @@ class CustomerManager {
  list()
  sort()
  export()
+}
+
+class Auth {
+  sessionId
+  userId
+  permission
+  login()
+  logout()
+  editAccount()
+  changePassword()
 }
 
 class InventoryItem {
@@ -121,7 +130,7 @@ class Invoice {
   send()
 }
 
-class User {
+abstract class User {
   userId
   name
   email
@@ -132,30 +141,38 @@ class User {
   delete()
 }
 
-class Auth {
-  sessionId
-  userId
-  permission
-  login()
-  logout()
-  editAccount()
-  changePassword()
+class CustomerUser {
+  downloadInvoice()
+  viewInvoices()
+  viewPurchaseOrders()
+  payInvoice()
+}
+
+class MerchantUser {
+  viewTransactions()
 }
 
 class Report {
+  alertThreshold
   lowInventoryAlert()
   returns()
 }
 
-InventoryManager "1..1" --|> "0..*" InventoryItem
-OrderManager  "1..1" --|> "0..*" PurchaseOrder
-CustomerManager  "1..1" --|> "0..*" Customer
-PurchaseOrder "1..1" --|> "1..1" Invoice
-PurchaseOrder "1..1" --|> "1..1" Customer
-PurchaseOrder "1..1" --|> "1..1" Shipping
-PurchaseOrder "1..1" --|> "1..*" InventoryItem
-Customer --|> "1..*" Address
-Auth --|> "1..1" User
-Shipping "1..1" --|> "1..1" ShippingVendor
-
+InventoryManager "1..1" o-- "0..*" InventoryItem
+OrderManager  "1..1" o-- "0..*" PurchaseOrder
+CustomerManager  "1..1" o-- "0..*" Customer
+PurchaseOrder "1..1" ..> "1..1" Invoice
+PurchaseOrder "0..*" --* "1..1" Customer
+PurchaseOrder "1..1" ..> "1..*" Shipping
+PurchaseOrder "0..1" o-- "1..*" InventoryItem
+Customer "1..1" *-- "1..*" Address
+Auth "1..1" -- "0..*" User
+Shipping "0..*" o-- "1..1" ShippingVendor
+User  <|-- CustomerUser
+User  <|-- MerchantUser
+InventoryManager "1..1" -- "0..*" Report
+Customer "1..1" -- "0..1" CustomerUser
+InventoryManager -[hidden] OrderManager
+OrderManager -[hidden] CustomerManager
+Customer -[hidden] PurchaseOrder
 @enduml
