@@ -1,9 +1,13 @@
 @startuml
 class InventoryManager {
+ inventoryItemList
  search()
  list()
  sort()
  export()
+ addInventoryItem()
+ updateInventoryItem()
+ deleteInventoryItem()
 }
 
 class OrderManager {
